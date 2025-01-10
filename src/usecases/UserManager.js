@@ -38,12 +38,23 @@ export class UserManager {
           <div class="dev-user-data" data-field="age">${user.getAge() || "N/A"}</div>
           <div class="dev-delete-user" data-user-id="${user.userId}">
         `;
+
+        // Depurar para confirmar que el botón se está creando
+        console.log("Card generada:", card);
+
         // Añadir el evento al botón de eliminar
-        card.querySelector(".dev-delete-user").addEventListener("click", async (e) => {
-          const userId = e.target.getAttribute("data-user-id");
-          await UserManager.deleteUser(userId); // Llamar a la función de eliminación
-          await UserManager.renderUsersInGrid(containerId); // Recargar la lista
-        });
+        const deleteButton = card.querySelector(".dev-delete-user");
+        console.log("Botón encontrado:", deleteButton);
+
+        if (deleteButton) {
+          deleteButton.addEventListener("click", async (e) => {
+            const userId = e.target.getAttribute("data-user-id");
+            await UserManager.deleteUser(userId); // Llamar a la función de eliminación
+            await UserManager.renderUsersInGrid(containerId); // Recargar la lista
+          });
+        } else {
+          console.error("Botón eliminar no encontrado en la card:", card);
+        }
 
         // Añadir la card al grid
         container.appendChild(card);
