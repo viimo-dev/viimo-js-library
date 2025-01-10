@@ -4,6 +4,7 @@ import axios from "https://cdn.jsdelivr.net/npm/axios@1.3.5/dist/axios.min.js";
 export const apiClient = axios.create({
   baseURL: "https://backend.viimo.app/api/v1", // URL base de tu backend
   timeout: 5000, // Tiempo máximo de espera en milisegundos
+  withCredentials: false, // No usar cookies
   headers: {
     "Content-Type": "application/json", // Tipo de contenido
   },
