@@ -3,15 +3,7 @@ import { UserAPIAdapter } from "../adapters/UserAPIAdapter.js";
 //******* OBTENER USUARIOS PARA GRID EN DEVELOPMENT */
 export class UserManager {
 
-  static async deleteUser(userId) {
-    try {
-      const response = await UserAPIAdapter.deleteUser(userId);
-      console.log(`Usuario con ID ${userId} eliminado:`, response);
-    } catch (error) {
-      console.error(`Error al eliminar usuario con ID ${userId}:`, error);
-    }
-  }
-  
+
   // Renderizar usuarios dinámicamente como cards en el grid
   static async renderUsersInGrid(containerId) {
     try {
@@ -62,5 +54,17 @@ export class UserManager {
     } catch (error) {
       console.error("Error al renderizar usuarios en el grid:", error);
     }
+
+    
   }
+
+  static async deleteUser(userId) {
+    try {
+      const response = await UserAPIAdapter.deleteUser(userId);
+      console.log(`Usuario con ID ${userId} eliminado:`, response);
+    } catch (error) {
+      console.error(`Error al eliminar usuario con ID ${userId}:`, error);
+    }
+  }
+  
 }
