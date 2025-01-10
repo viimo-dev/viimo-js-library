@@ -36,7 +36,7 @@ export class UserManager {
           <div class="dev-user-data" data-field="email">${user.email}</div>
           <div class="dev-user-data" data-field="isAdmin">${user.isAdmin ? "Sí" : "No"}</div>
           <div class="dev-user-data" data-field="age">${user.getAge() || "N/A"}</div>
-          <button class="dev-delete-user" data-user-id="${user.userId}">
+          <div class="dev-delete-user" data-user-id="${user.userId}">
         `;
         // Añadir el evento al botón de eliminar
         card.querySelector(".dev-delete-user").addEventListener("click", async (e) => {
