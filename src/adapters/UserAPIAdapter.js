@@ -1,4 +1,4 @@
-import { apiClient } from "../frameworks/apiClient.js";
+import apiClient from "../frameworks/apiClient.js";
 import { User } from "../entities/User.js";
 
 export class UserAPIAdapter {

@@ -1,14 +1,12 @@
 // Configuración del cliente Axios
 const apiClient = axios.create({
-  baseURL: "https://backend.viimo.app/api/v1", // URL base de tu backend
-  timeout: 5000, // Tiempo máximo de espera en milisegundos
+  baseURL: "https://tu-backend-api.com", // Cambia por tu URL de backend
+  timeout: 10000,
   withCredentials: false, // No usar cookies
-  headers: {
-    "Content-Type": "application/json", // Tipo de contenido
-  },
 });
 
 export default apiClient;
+
 
 // Manejo de errores y respuestas
 apiClient.interceptors.response.use(
