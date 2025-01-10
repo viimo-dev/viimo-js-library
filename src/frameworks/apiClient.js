@@ -1,6 +1,6 @@
 // Configuración del cliente Axios
 const apiClient = axios.create({
-  baseURL: "https://tu-backend-api.com", // Cambia por tu URL de backend
+  baseURL: "https://backend.viimo.app/api/v1", // Cambia por tu URL de backend
   timeout: 10000,
   withCredentials: false, // No usar cookies
 });
