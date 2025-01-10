@@ -1,21 +1,39 @@
 import { UserAPIAdapter } from "../adapters/UserAPIAdapter.js";
 
-//******* OBTENER USUARIOS PARA TABLA EN DEVELOPMENT */
+//******* OBTENER USUARIOS PARA GRID EN DEVELOPMENT */
+
 export class UserManager {
-  // Obtener usuarios formateados para la tabla
-  static async getUsersForTable() {
+  // Renderizar usuarios dinámicamente como cards en el grid
+  static async renderUsersInGrid(containerId) {
     try {
       const users = await UserAPIAdapter.getAllUsers();
-      // Transformar los datos al formato necesario para el front
-      return users.map((user) => ({
-        name: user.name,
-        email: user.email,
-        isAdmin: user.isAdmin ? "Sí" : "No", // Convertir booleano a texto
-        age: user.getAge() || "N/A", // Si no hay fecha de nacimiento, mostrar "N/A"
-      }));
+
+      // Seleccionar el contenedor del grid
+      const container = document.getElementById(containerId);
+      if (!container) throw new Error(`No se encontró el contenedor con ID: ${containerId}`);
+
+      // Limpiar el contenedor antes de agregar contenido
+      container.innerHTML = "";
+
+      // Crear dinámicamente las cards para cada usuario
+      users.forEach((user) => {
+        // Crear el contenedor de la card
+        const card = document.createElement("div");
+        card.className = "dev-user-card";
+
+        // Agregar los datos del usuario
+        card.innerHTML = `
+          <div class="dev-user-data" data-field="name">${user.name}</div>
+          <div class="dev-user-data" data-field="email">${user.email}</div>
+          <div class="dev-user-data" data-field="isAdmin">${user.isAdmin ? "Sí" : "No"}</div>
+          <div class="dev-user-data" data-field="age">${user.getAge() || "N/A"}</div>
+        `;
+
+        // Añadir la card al grid
+        container.appendChild(card);
+      });
     } catch (error) {
-      console.error("Error al obtener usuarios para la tabla:", error);
-      throw error;
+      console.error("Error al renderizar usuarios en el grid:", error);
     }
   }
 }
