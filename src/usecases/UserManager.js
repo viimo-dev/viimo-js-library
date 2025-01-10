@@ -36,7 +36,7 @@ export class UserManager {
           <div class="dev-user-data" data-field="email">${user.email}</div>
           <div class="dev-user-data" data-field="isAdmin">${user.isAdmin ? "Sí" : "No"}</div>
           <div class="dev-user-data" data-field="age">${user.getAge() || "N/A"}</div>
-          <div class="dev-delete-user" data-user-id="${user.userId}">
+          <div class="dev-delete-user" data-user-id="${user.userId}">Eliminar</div>
         `;
 
         // Depurar para confirmar que el botón se está creando
