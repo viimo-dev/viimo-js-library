@@ -1,4 +1,4 @@
-import axios from "axios";
+import axios from "https://cdn.jsdelivr.net/npm/axios@1.3.5/dist/axios.min.js";
 
 // Configuración del cliente Axios
 export const apiClient = axios.create({
