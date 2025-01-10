@@ -14,6 +14,7 @@ export class User {
       updatedAt,
       UserType,
     }) {
+      console.log("Valores recibidos en User:", userId); // Verifica si userId tiene un valor
       this.id = userId;
       this.firebaseId = userFirebaseId;
       this.email = userEmail;
