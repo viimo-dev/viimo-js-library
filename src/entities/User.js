@@ -1,50 +1,50 @@
 export class User {
   constructor({
-    userId,
-    userFirebaseId,
-    userEmail,
-    userImage,
-    userTypeId,
-    userName,
-    userAddress,
-    userPhone,
-    userDob,
+    Id,
+    FirebaseId,
+    Email,
+    Image,
+    TypeId,
+    Name,
+    Address,
+    Phone,
+    Dob,
     isUserAdmin,
     createdAt,
     updatedAt,
-    UserType,
+    Type,
   }) {
     console.log("Valores recibidos en User:", {
-      userId,
-      userFirebaseId,
-      userEmail,
-      userImage,
-      userTypeId,
-      userName,
-      userAddress,
-      userPhone,
-      userDob,
+      Id,
+      FirebaseId,
+      Email,
+      Image,
+      TypeId,
+      Name,
+      Address,
+      Phone,
+      Dob,
       isUserAdmin,
       createdAt,
       updatedAt,
-      UserType,
+      Type,
     });
   
     // Asignación exacta
-    this.userId = userId;
-    this.userFirebaseId = userFirebaseId;
-    this.userEmail = userEmail;
-    this.userImage = userImage;
-    this.userTypeId = userTypeId;
-    this.userName = userName;
-    this.userAddress = userAddress;
-    this.userPhone = userPhone;
-    this.userDob = userDob;
+    this.Id = userId;
+    this.FirebaseId = userFirebaseId;
+    this.Email = userEmail;
+    this.Image = userImage;
+    this.TypeId = userTypeId;
+    this.Name = userName;
+    this.Address = userAddress;
+    this.Phone = userPhone;
+    this.Dob = userDob;
     this.isUserAdmin = isUserAdmin;
     this.createdAt = createdAt;
     this.updatedAt = updatedAt;
-    this.userType = UserType?.userTypeName || "Unknown"; // Valor por defecto
-    console.log("ID asignado al user:",this.userId)
+    this.Type = UserType?.userTypeName || "Unknown"; // Valor por defecto
+    console.log("ID asignado al user:",this.Id)
   }
   
   
