@@ -21,7 +21,7 @@ export class UserManager {
         // Crear el contenedor de la card
         const card = document.createElement("div");
         card.className = "dev-user-card";
-        console.log('Este es el ID de user creado en el card',user.userId);
+        console.log('Este es el ID de user creado en el card',user.Id);
 
         // Agregar los datos del usuario
         card.innerHTML = `
@@ -29,7 +29,7 @@ export class UserManager {
           <div class="dev-user-data" data-field="email">${user.email}</div>
           <div class="dev-user-data" data-field="isAdmin">${user.isAdmin ? "Sí" : "No"}</div>
           <div class="dev-user-data" data-field="age">${user.getAge() || "N/A"}</div>
-          <div class="dev-delete-user" data-user-id="${user.userId}">Eliminar</div>
+          <div class="dev-delete-user" data-user-id="${user.Id}">Eliminar</div>
         `;
 
         // Depurar para confirmar que el botón se está creando
