@@ -57,7 +57,7 @@ export class User {
   
     // Método para obtener la edad del usuario basado en su fecha de nacimiento
     getAge() {
-      if (!this.dob) return null;
+      if (!this.Dob) return null;
       const dob = new Date(this.Dob);
       const diff = Date.now() - dob.getTime();
       const ageDate = new Date(diff);
