@@ -69,15 +69,15 @@ export class UserAPIAdapter {
   // Transformar datos de User para enviarlos al backend
   static transformToBackend(userEntity) {
     return {
-      userId: userEntity.id, // Mapeamos nuestras propiedades internas al formato esperado por el backend
-      userFirebaseId: userEntity.firebaseId,
-      userEmail: userEntity.email,
-      userImage: userEntity.image,
-      userTypeId: userEntity.typeId,
-      userName: userEntity.name,
-      userAddress: userEntity.address,
-      userPhone: userEntity.phone,
-      userDob: userEntity.dob,
+      userId: userEntity.Idd, // Mapeamos nuestras propiedades internas al formato esperado por el backend
+      userFirebaseId: userEntity.FirebaseId,
+      userEmail: userEntity.Email,
+      userImage: userEntity.Image,
+      userTypeId: userEntity.TypeId,
+      userName: userEntity.Name,
+      userAddress: userEntity.Address,
+      userPhone: userEntity.Phone,
+      userDob: userEntity.Dob,
       isUserAdmin: userEntity.isAdmin,
       createdAt: userEntity.createdAt,
       updatedAt: userEntity.updatedAt,
