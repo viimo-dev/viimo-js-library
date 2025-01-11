@@ -75,16 +75,15 @@ export class UserManager {
   static async deleteUser(userId) {
     try {
       console.log(`Intentando eliminar usuario con ID ${userId}`);
-      const response = await apiClient.delete(`/users/${userId}`);
+      const response = await UserAPIAdapter.deleteUser(userId);
       console.log(`Usuario con ID ${userId} eliminado correctamente:`, response);
       return response.data; // Retorna la respuesta si la eliminación es exitosa
     } catch (error) {
       console.error("Error capturado en deleteUser:", error);
   
-      // Manejo del error: obtenemos status y mensaje, con valores por defecto si no existen
-      const status = error.response?.status || "Sin respuesta del servidor";
-      const message =
-        error.response?.data?.message || error.message || "No se pudo eliminar el usuario.";
+      // Manejo del error: obtenemos status y mensaje
+      const status = error.status || "Sin respuesta del servidor";
+      const message = error.message || "No se pudo eliminar el usuario.";
   
       console.error(`Error al eliminar usuario con ID ${userId}: Status: ${status}, Mensaje: ${message}`);
   
