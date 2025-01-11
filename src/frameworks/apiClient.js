@@ -1,12 +1,20 @@
+// Detectar si axios ya está disponible (Webflow) o importarlo (Node.js)
+let axiosInstance;
+
+if (typeof axios !== "undefined") {
+  axiosInstance = axios; // Ya está definido (Webflow)
+} else {
+  // Importación dinámica para Node.js
+  const axiosModule = await import("axios");
+  axiosInstance = axiosModule.default;
+}
+
 // Configuración del cliente Axios
-const apiClient = axios.create({
+const apiClient = axiosInstance.create({
   baseURL: "https://backend.viimo.app/api/v1", // Cambia por tu URL de backend
   timeout: 10000,
   withCredentials: false, // No usar cookies
 });
-
-export default apiClient;
-
 
 // Manejo de errores y respuestas
 apiClient.interceptors.response.use(
@@ -19,3 +27,4 @@ apiClient.interceptors.response.use(
   }
 );
 
+export default apiClient;
