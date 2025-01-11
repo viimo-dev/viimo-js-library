@@ -56,13 +56,19 @@ export class UserManager {
       const response = await UserAPIAdapter.deleteUser(userId);
       console.log(`Usuario con ID ${userId} eliminado correctamente:`, response);
     } catch (error) {
-      console.error(`Error al eliminar usuario con ID ${userId}:`, error);
+      // Depurar el error completo para verificar qué contiene
+      console.error("Error capturado en deleteUser:", error);
 
       const status = error.response?.status || "Sin respuesta del servidor";
-      const message =
-        error.response?.data?.message || error.message || "No se pudo eliminar el usuario.";
+    const message =
+      error.response?.data?.message || error.message || "No se pudo eliminar el usuario.";
 
-      throw { status, message }; // Lanza el error para que `renderUsersInGrid` lo maneje
+    console.error(
+      `Error al eliminar usuario con ID ${userId}: Status: ${status}, Mensaje: ${message}`
+    );
+
+    // Lanzar el error estructurado con status y message
+    throw { status, message };
     }
   }
 }
