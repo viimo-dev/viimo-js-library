@@ -12,8 +12,8 @@ export class EventCardComponent {
       const formattedDate = this.formatDate(this.eventData.startDate);
   
       template.innerHTML = `
-        <div class="dev-event-card">
-          <div class="dev-event-card-info">
+        <div class="dev-card">
+          <div class="dev-card-info">
             <div data-field="name" class="dev-event-data">${this.eventData.name || "Internal name no disponible"}</div>
             <div class="filters-separator"></div>
             <div data-field="title" class="dev-event-data">${this.eventData.title || "Public name no disponible"}</div>
