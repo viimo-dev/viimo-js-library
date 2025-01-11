@@ -26,7 +26,7 @@ export class UserManager {
           <div class="dev-user-data" data-field="email">${user.Email}</div>
           <div class="dev-user-data" data-field="isAdmin">${user.isUserAdmin ? "Sí" : "No"}</div>
           <div class="dev-user-data" data-field="age">${user.getAge() || "N/A"}</div>
-          <div class="dev-delete-user" data-user-id="${user.Id}">Eliminar</div>
+          <button class="dev-delete-user" data-user-id="${user.Id}">Eliminar</button>
         `;
   
         // Añadir evento al botón eliminar
@@ -36,14 +36,20 @@ export class UserManager {
             const userId = e.target.getAttribute("data-user-id");
             try {
               await UserManager.deleteUser(userId);
+              console.log(`Usuario con ID ${userId} eliminado correctamente.`);
               await UserManager.renderUsersInGrid(containerId); // Recargar el grid
             } catch (error) {
-              if (error.response?.status === 404) {
+              // Manejo del error de eliminación
+              const status = error.response?.status || "Desconocido";
+              const message = error.response?.data || error.message;
+  
+              if (status === 404) {
                 console.warn(`El usuario con ID ${userId} no se pudo eliminar del backend`);
                 deleteButton.innerText = "No se puede eliminar del backend";
-                deleteButton.disabled = true; // Opcional: Desactiva el botón después
+                deleteButton.disabled = true; // Desactiva el botón después
               } else {
-                console.error(`Error al eliminar usuario con ID ${userId}:`, error);
+                console.error(`Error al eliminar usuario con ID ${userId}:`, message);
+                deleteButton.innerText = "Error al eliminar";
               }
             }
           });
@@ -53,9 +59,10 @@ export class UserManager {
         container.appendChild(card);
       });
     } catch (error) {
-      console.error("Error al renderizar usuarios en el grid:", error);
+      console.error("Error al renderizar usuarios en el grid:", error.message || error);
     }
   }
+  
   
 
   static async deleteUser(userId) {
