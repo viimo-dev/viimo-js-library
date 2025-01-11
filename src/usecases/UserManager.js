@@ -21,7 +21,7 @@ export class UserManager {
         // Crear el contenedor de la card
         const card = document.createElement("div");
         card.className = "dev-user-card";
-        console.log(user.userID);
+        console.log(user.userId);
 
         // Agregar los datos del usuario
         card.innerHTML = `
