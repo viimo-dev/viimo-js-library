@@ -10,12 +10,12 @@ export default apiClient;
 
 // Manejo de errores y respuestas
 apiClient.interceptors.response.use(
-  (response) => {
-    console.log("Respuesta de la API:", response.data); // Log para verificar respuestas
-    return response;
-  },
+  (response) => response,
   (error) => {
-    console.error("Error en la API:", error.response?.data || error.message); // Log de errores
-    return Promise.reject(error.response?.data || error.message); // Propaga el error
+    const status = error.response?.status || "Sin respuesta del servidor";
+    const message = error.response?.data || error.message || "Error desconocido";
+    console.error(`Error en la API: Status: ${status}, Mensaje: ${message}`);
+    return Promise.reject({ status, message });
   }
 );
+

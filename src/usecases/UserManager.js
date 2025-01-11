@@ -77,7 +77,7 @@ export class UserManager {
       console.log(`Intentando eliminar usuario con ID ${userId}`);
       const response = await UserAPIAdapter.deleteUser(userId);
       console.log(`Usuario con ID ${userId} eliminado correctamente:`, response);
-      return response.data; // Retorna la respuesta si la eliminación es exitosa
+      return response; // Retorna la respuesta si la eliminación es exitosa
     } catch (error) {
       console.error("Error capturado en deleteUser:", error);
   

@@ -45,9 +45,9 @@ export class UserAPIAdapter {
       console.error(`Error al eliminar usuario con ID ${userId}:`, error);
   
       // Manejo del error para asegurar que status y message estén definidos
-      const status = error.response?.status || "Sin respuesta del servidor";
-      const message = error.response?.data || "No se pudo eliminar el usuario.";
-      throw { status, message }; // Lanza un error estructurado
+      const { status, message } = error; // Capturamos directamente status y message del error lanzado por apiClient
+      console.error(`Error al eliminar usuario con ID ${userId}: Status: ${status}, Mensaje: ${message}`);
+      throw { status, message }; // Lanzamos el error estructurado
     }
   }
   
