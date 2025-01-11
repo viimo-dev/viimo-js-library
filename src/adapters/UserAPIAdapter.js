@@ -47,6 +47,7 @@ export class UserAPIAdapter {
 
   // Transformar datos del backend a entidad User
   static transformToEntity(rawData) {
+    console.log("Datos crudos del backend:", rawData); // Verifica la estructura y valores
     return new User({
       userId: rawData.userId, // Asignar correctamente los nombres
       userFirebaseId: rawData.userFirebaseId,

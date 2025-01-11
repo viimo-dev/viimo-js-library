@@ -1,34 +1,35 @@
 export class User {
-    constructor({
-      userId,
-      userFirebaseId,
-      userEmail,
-      userImage,
-      userTypeId,
-      userName,
-      userAddress,
-      userPhone,
-      userDob,
-      isUserAdmin,
-      createdAt,
-      updatedAt,
-      UserType,
-    }) {
-      console.log("Valores recibidos en User:", userId); // Verifica si userId tiene un valor
-      this.id = userId;
-      this.firebaseId = userFirebaseId;
-      this.email = userEmail;
-      this.image = userImage;
-      this.typeId = userTypeId;
-      this.name = userName;
-      this.address = userAddress;
-      this.phone = userPhone;
-      this.dob = userDob;
-      this.isAdmin = isUserAdmin;
-      this.createdAt = createdAt;
-      this.updatedAt = updatedAt;
-      this.userType = UserType?.userTypeName || "Unknown"; // Valor por defecto
-    }
+  constructor({
+    userId,
+    userFirebaseId,
+    userEmail,
+    userImage,
+    userTypeId,
+    userName,
+    userAddress,
+    userPhone,
+    userDob,
+    isUserAdmin,
+    createdAt,
+    updatedAt,
+    UserType,
+  }) {
+    console.log("Valores recibidos en User:", userId); // Verifica si userId tiene un valor
+    this.userId = userId; // Cambiado de this.id a this.userId
+    this.firebaseId = userFirebaseId;
+    this.email = userEmail;
+    this.image = userImage;
+    this.typeId = userTypeId;
+    this.name = userName;
+    this.address = userAddress;
+    this.phone = userPhone;
+    this.dob = userDob;
+    this.isAdmin = isUserAdmin;
+    this.createdAt = createdAt;
+    this.updatedAt = updatedAt;
+    this.userType = UserType?.userTypeName || "Unknown"; // Valor por defecto
+  }
+  
   
     // Método para verificar si el email es válido
     isValidEmail() {
