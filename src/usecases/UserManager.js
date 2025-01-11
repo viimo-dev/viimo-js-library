@@ -25,8 +25,8 @@ export class UserManager {
 
         // Agregar los datos del usuario
         card.innerHTML = `
-          <div class="dev-user-data" data-field="name">${user.name}</div>
-          <div class="dev-user-data" data-field="email">${user.email}</div>
+          <div class="dev-user-data" data-field="name">${user.Name}</div>
+          <div class="dev-user-data" data-field="email">${user.Email}</div>
           <div class="dev-user-data" data-field="isAdmin">${user.isAdmin ? "Sí" : "No"}</div>
           <div class="dev-user-data" data-field="age">${user.getAge() || "N/A"}</div>
           <div class="dev-delete-user" data-user-id="${user.Id}">Eliminar</div>
