@@ -79,15 +79,20 @@ export class UserManager {
       console.log(`Usuario con ID ${userId} eliminado correctamente:`, response);
       return response.data; // Retorna la respuesta si la eliminación es exitosa
     } catch (error) {
-      // Asegúrate de acceder a status y message desde error.response
+      console.error("Error capturado en deleteUser:", error);
+  
+      // Manejo del error: obtenemos status y mensaje, con valores por defecto si no existen
       const status = error.response?.status || "Sin respuesta del servidor";
-      const message = error.response?.data || error.message || "No se pudo eliminar el usuario.";
+      const message =
+        error.response?.data?.message || error.message || "No se pudo eliminar el usuario.";
+  
       console.error(`Error al eliminar usuario con ID ${userId}: Status: ${status}, Mensaje: ${message}`);
-      
+  
       // Lanzamos un error estructurado con status y message
       throw { status, message };
     }
   }
+  
   
   
 }
