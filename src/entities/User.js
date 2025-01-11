@@ -44,6 +44,7 @@ export class User {
     this.createdAt = createdAt;
     this.updatedAt = updatedAt;
     this.userType = UserType?.userTypeName || "Unknown"; // Valor por defecto
+    console.log("ID asignado al user:",this.userId)
   }
   
   
