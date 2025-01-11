@@ -8,8 +8,8 @@ export class UserCardComponent {
     createElement() {
       const template = document.createElement("template");
       template.innerHTML = `
-        <div class="dev-user-card">
-          <div class="dev-user-card-info">
+        <div class="dev-card">
+          <div class="dev-card-info">
             <div data-field="name" class="dev-user-data">${this.userData.Name || "Nombre no disponible"}</div>
             <div class="filters-separator"></div>
             <div data-field="email" class="dev-user-data">${this.userData.Email || "Email no disponible"}</div>
