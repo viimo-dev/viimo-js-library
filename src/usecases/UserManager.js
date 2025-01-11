@@ -18,33 +18,26 @@ export class UserManager {
           <div class="dev-user-data" data-field="email">${user.Email}</div>
           <div class="dev-user-data" data-field="isAdmin">${user.isUserAdmin ? "Sí" : "No"}</div>
           <div class="dev-user-data" data-field="age">${user.getAge() || "N/A"}</div>
-          <div class="dev-delete-user">
-            <div class="paragraph">Eliminar usuario</div>
-          </div>
+          <div class="dev-delete-user" data-user-id="${user.Id}">Eliminar usuario</div>
         `;
 
         const deleteButton = card.querySelector(".dev-delete-user");
-        const paragraph = deleteButton.querySelector(".paragraph");
 
         if (deleteButton) {
           deleteButton.addEventListener("click", async () => {
-            const userId = user.Id; // Directamente desde el objeto usuario
+            const userId = deleteButton.getAttribute("data-user-id");
             try {
               await UserManager.deleteUser(userId);
               console.log(`Usuario con ID ${userId} eliminado correctamente.`);
               await UserManager.renderUsersInGrid(containerId); // Recargar el grid
             } catch (error) {
-              const status = error.status || "Desconocido";
-              const message = error.message || "Error desconocido";
-
-              if (status === 404) {
-                console.warn(`El usuario con ID ${userId} no se pudo eliminar del backend`);
-                paragraph.innerText =
-                  "No se puede eliminar del backend. API devuelve 404 al ID del user --> Culpa de Iago";
-                deleteButton.disabled = true; // Opcional: desactiva el botón
+              console.error(`Error en la eliminación de usuario ${userId}:`, error);
+              if (error.status === 404) {
+                console.warn(`El usuario con ID ${userId} no se pudo eliminar del backend.`);
+                deleteButton.innerText = "No se puede eliminar del backend. API devuelve 404.";
+                deleteButton.disabled = true;
               } else {
-                console.error(`Error al eliminar usuario con ID ${userId}:`, message);
-                paragraph.innerText = `Error: ${message}`;
+                deleteButton.innerText = `Error: ${error.message}`;
               }
             }
           });
