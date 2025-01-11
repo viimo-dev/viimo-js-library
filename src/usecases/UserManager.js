@@ -59,8 +59,8 @@ export class UserManager {
       // Depurar el error completo para verificar qué contiene
       console.error("Error capturado en deleteUser:", error);
 
-      const status = error.response?.status || "Sin respuesta del servidor";
-    const message =
+      const status = error.status || error.response?.status || "Sin respuesta del servidor";
+      const message =
       error.response?.data?.message || error.message || "No se pudo eliminar el usuario.";
 
     console.error(
