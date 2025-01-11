@@ -26,7 +26,7 @@ export class UserManager {
           <div class="dev-user-data" data-field="email">${user.Email}</div>
           <div class="dev-user-data" data-field="isAdmin">${user.isUserAdmin ? "Sí" : "No"}</div>
           <div class="dev-user-data" data-field="age">${user.getAge() || "N/A"}</div>
-          <button class="dev-delete-user" data-user-id="${user.Id}">Eliminar</button>
+          <div class="dev-delete-user" data-user-id="${user.Id}">Eliminar</div>
         `;
   
         // Añadir evento al botón eliminar
