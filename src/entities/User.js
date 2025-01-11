@@ -31,19 +31,19 @@ export class User {
     });
   
     // Asignación exacta
-    this.Id = userId;
-    this.FirebaseId = userFirebaseId;
-    this.Email = userEmail;
-    this.Image = userImage;
-    this.TypeId = userTypeId;
-    this.Name = userName;
-    this.Address = userAddress;
-    this.Phone = userPhone;
-    this.Dob = userDob;
+    this.Id = Id;
+    this.FirebaseId = FirebaseId;
+    this.Email = Email;
+    this.Image = Image;
+    this.TypeId = TypeId;
+    this.Name = Name;
+    this.Address = Address;
+    this.Phone = Phone;
+    this.Dob = Dob;
     this.isUserAdmin = isUserAdmin;
     this.createdAt = createdAt;
     this.updatedAt = updatedAt;
-    this.Type = UserType?.userTypeName || "Unknown"; // Valor por defecto
+    this.Type = Type?.userTypeName || "Unknown"; // Valor por defecto
     console.log("ID asignado al user:",this.Id)
   }
   
