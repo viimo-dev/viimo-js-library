@@ -49,19 +49,19 @@ export class UserAPIAdapter {
   static transformToEntity(rawData) {
     console.log("Datos crudos del backend:", rawData); // Verifica la estructura y valores
     return new User({
-      userId: rawData.userId, // Asignar correctamente los nombres
-      userFirebaseId: rawData.userFirebaseId,
-      userEmail: rawData.userEmail,
-      userImage: rawData.userImage,
-      userTypeId: rawData.userTypeId,
-      userName: rawData.userName,
-      userAddress: rawData.userAddress,
-      userPhone: rawData.userPhone,
-      userDob: rawData.userDob,
+      Id: rawData.userId, // Asignar correctamente los nombres
+      FirebaseId: rawData.userFirebaseId,
+      Email: rawData.userEmail,
+      Image: rawData.userImage,
+      TypeId: rawData.userTypeId,
+      Name: rawData.userName,
+      Address: rawData.userAddress,
+      Phone: rawData.userPhone,
+      Dob: rawData.userDob,
       isUserAdmin: rawData.isUserAdmin,
       createdAt: rawData.createdAt,
       updatedAt: rawData.updatedAt,
-      UserType: rawData.UserType,
+      Type: rawData.UserType,
     });
   }
   
