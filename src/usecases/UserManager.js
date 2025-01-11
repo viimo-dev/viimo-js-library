@@ -31,6 +31,7 @@ export class UserManager {
             } catch (error) {
               const status = error.status || "Desconocido";
               let message = error.message || "Error desconocido";
+              console.log("Este es el status antes del if: ", error.status)
 
               if (status === 404) {
                 console.warn(`El usuario con ID ${userId} no se pudo eliminar del backend`);
