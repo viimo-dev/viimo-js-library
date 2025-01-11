@@ -30,30 +30,26 @@ export class UserManager {
         `;
   
         // Añadir evento al botón eliminar
-        const deleteButton = card.querySelector(".dev-delete-user");
-        if (deleteButton) {
-          deleteButton.addEventListener("click", async (e) => {
-            const userId = e.target.getAttribute("data-user-id");
-            try {
-              await UserManager.deleteUser(userId);
-              console.log(`Usuario con ID ${userId} eliminado correctamente.`);
-              await UserManager.renderUsersInGrid(containerId); // Recargar el grid
-            } catch (error) {
-              // Manejo del error de eliminación
-              const status = error.response?.status || "Desconocido";
-              const message = error.response?.data || error.message;
-  
-              if (status === 404) {
-                console.warn(`El usuario con ID ${userId} no se pudo eliminar del backend`);
-                deleteButton.innerText = "No se puede eliminar del backend";
-                deleteButton.disabled = true; // Desactiva el botón después
-              } else {
-                console.error(`Error al eliminar usuario con ID ${userId}:`, message);
-                deleteButton.innerText = "Error al eliminar";
-              }
+        deleteButton.addEventListener("click", async (e) => {
+          const userId = e.target.getAttribute("data-user-id");
+          try {
+            await UserManager.deleteUser(userId);
+            await UserManager.renderUsersInGrid(containerId); // Recargar el grid
+          } catch (error) {
+            const status = error.status || "Desconocido";
+            const message = error.message || "Error desconocido";
+        
+            if (status === 404) {
+              console.warn(`El usuario con ID ${userId} no se pudo eliminar del backend`);
+              deleteButton.innerText = "No se puede eliminar del backend";
+              deleteButton.disabled = true; // Desactivar el botón después
+            } else {
+              console.error(`Error al eliminar usuario con ID ${userId}:`, message);
+              deleteButton.innerText = "Error al eliminar";
             }
-          });
-        }
+          }
+        });
+        
   
         // Añadir la card al grid
         container.appendChild(card);
@@ -67,10 +63,14 @@ export class UserManager {
 
   static async deleteUser(userId) {
     try {
+      console.log(`Intentando eliminar usuario con ID ${userId}`);
       const response = await UserAPIAdapter.deleteUser(userId);
-      console.log(`Usuario con ID ${userId} eliminado:`, response);
+      console.log(`Usuario con ID ${userId} eliminado correctamente:`, response);
     } catch (error) {
-      console.error(`Error al eliminar usuario con ID ${userId}:`, error);
+      const status = error.status || "Desconocido";
+      const message = error.message || "No se pudo eliminar el usuario.";
+      console.error(`Error al eliminar usuario con ID ${userId}: Status: ${status}, Mensaje: ${message}`);
+      throw { status, message }; // Lanza el error para que `renderUsersInGrid` lo gestione
     }
   }
   
