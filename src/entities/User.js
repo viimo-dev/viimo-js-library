@@ -52,7 +52,7 @@ export class User {
     // Método para verificar si el email es válido
     isValidEmail() {
       const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-      return emailRegex.test(this.email);
+      return emailRegex.test(this.Email);
     }
   
     // Método para obtener la edad del usuario basado en su fecha de nacimiento
