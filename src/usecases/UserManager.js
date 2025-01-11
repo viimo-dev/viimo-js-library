@@ -31,14 +31,29 @@ export class UserManager {
               const status = error.status || "Desconocido";
               const message = error.message || "Error desconocido";
 
-              if (status === 404 && paragraph) {
+              if (status === 404) {
                 console.warn(`El usuario con ID ${userId} no se pudo eliminar del backend`);
-                paragraph.innerText =
-                  "No se puede eliminar del backend. API devuelve 404 al ID del user --> Culpa de Iago";
+              
+                if (paragraph) {
+                  paragraph.innerText =
+                    "No se puede eliminar del backend. API devuelve 404 al ID del user --> Culpa de Iago";
+                }
                 deleteButton.disabled = true; // Opcional: desactiva el botón
-              } else if (paragraph) {
-                paragraph.innerText = `Error: ${message}`;
+              } else {
+                console.error(`Error al eliminar usuario con ID ${userId}:`, message);
+              
+                if (paragraph) {
+                  // Si `message` contiene HTML, extraemos el texto plano
+                  if (typeof message === "string" && message.includes("<")) {
+                    const tempDiv = document.createElement("div");
+                    tempDiv.innerHTML = message;
+                    message = tempDiv.innerText.trim(); // Convertir HTML a texto plano
+                  }
+              
+                  paragraph.innerText = `Error: ${message}`;
+                }
               }
+              
             }
           });
         }
