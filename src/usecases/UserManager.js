@@ -12,6 +12,7 @@ export class UserManager {
 
       users.forEach((user) => {
         const userCardHTML = Components.dev.UserCard(user);
+        console.log("HTML generado para la card:", userCardHTML);
 
         const template = document.createElement("template");
         template.innerHTML = userCardHTML.trim();
@@ -22,18 +23,17 @@ export class UserManager {
 
         if (deleteButton) {
           deleteButton.addEventListener("click", async () => {
-            const userId = deleteButton.getAttribute("data-user-id");
+            let userId = deleteButton.getAttribute("data-user-id");
             try {
               await UserManager.deleteUser(userId);
               console.log(`Usuario con ID ${userId} eliminado correctamente.`);
               await UserManager.renderUsersInGrid(containerId); // Recargar el grid
             } catch (error) {
               const status = error.status || "Desconocido";
-              const message = error.message || "Error desconocido";
+              let message = error.message || "Error desconocido";
 
               if (status === 404) {
                 console.warn(`El usuario con ID ${userId} no se pudo eliminar del backend`);
-              
                 if (paragraph) {
                   paragraph.innerText =
                     "No se puede eliminar del backend. API devuelve 404 al ID del user --> Culpa de Iago";
@@ -41,19 +41,17 @@ export class UserManager {
                 deleteButton.disabled = true; // Opcional: desactiva el botón
               } else {
                 console.error(`Error al eliminar usuario con ID ${userId}:`, message);
-              
+
                 if (paragraph) {
-                  // Si `message` contiene HTML, extraemos el texto plano
+                  // Si el mensaje contiene HTML, lo limpiamos
                   if (typeof message === "string" && message.includes("<")) {
                     const tempDiv = document.createElement("div");
                     tempDiv.innerHTML = message;
                     message = tempDiv.innerText.trim(); // Convertir HTML a texto plano
                   }
-              
                   paragraph.innerText = `Error: ${message}`;
                 }
               }
-              
             }
           });
         }
@@ -74,8 +72,14 @@ export class UserManager {
       console.error(`Error al eliminar usuario con ID ${userId}:`, error);
 
       const status = error.response?.status || "Sin respuesta del servidor";
-      const message =
+      let message =
         error.response?.data?.message || error.message || "No se pudo eliminar el usuario.";
+
+      if (typeof message === "string" && message.includes("<")) {
+        const tempDiv = document.createElement("div");
+        tempDiv.innerHTML = message;
+        message = tempDiv.innerText.trim();
+      }
 
       throw { status, message }; // Lanza el error para que `renderUsersInGrid` lo maneje
     }

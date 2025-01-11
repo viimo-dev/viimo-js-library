@@ -12,7 +12,7 @@ export function UserCardComponent(user) {
         <div class="filters-separator"></div>
         <div data-field="age" class="dev-user-data">${user.getAge() || "N/A"} años</div>
         <div class="filters-separator"></div>
-        <article class="dev-delete-user">
+        <article class="dev-delete-user" data-user-id="${user.Id}">
           <div class="paragraph">Eliminar usuario</div>
           <img 
             src="https://cdn.prod.website-files.com/677e577ef5b94953b8c1831e/6781491bf42c0aa629f3ceb3_delete.svg" 
