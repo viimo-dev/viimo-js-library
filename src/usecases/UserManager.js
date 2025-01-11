@@ -51,11 +51,11 @@ export class UserManager {
   
             if (status === 404) {
               console.warn(`El usuario con ID ${userId} no se pudo eliminar del backend`);
-              deleteButton.innerText = "No se puede eliminar del backend";
+              deleteButton.innerText = "No se puede eliminar del backend. API devuelve 404 al ID del user --> Culpa de Iago";
               deleteButton.disabled = true;
             } else {
               console.error(`Error al eliminar usuario con ID ${userId}:`, message);
-              deleteButton.innerText = "Error al eliminar";
+              deleteButton.innerText = `Error: ${message}`;
             }
           }
         });
@@ -67,6 +67,7 @@ export class UserManager {
       console.error("Error al renderizar usuarios en el grid:", error.message || error);
     }
   }
+  
   
   
   
