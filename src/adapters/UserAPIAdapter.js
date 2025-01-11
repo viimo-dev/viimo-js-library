@@ -37,14 +37,15 @@ export class UserAPIAdapter {
 
   static async deleteUser(userId) {
     try {
+      console.log(`Intentando eliminar usuario con ID ${userId}`);
       const response = await apiClient.delete(`/users/${userId}`);
       return response.data;
     } catch (error) {
-      console.error(`Error al eliminar usuario con ID ${userId}:`, error);
-      throw error;
+      console.error(`Error al eliminar usuario con ID ${userId}:`, error.response?.data || error.message);
+      throw error; // Importante: Deja que el error llegue al `catch` en UserManager
     }
   }
-
+  
   // Transformar datos del backend a entidad User
   static transformToEntity(rawData) {
     console.log("Datos crudos del backend:", rawData); // Verifica la estructura y valores
