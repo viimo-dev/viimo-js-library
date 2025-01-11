@@ -1,4 +1,3 @@
-import from "https://cdn.jsdelivr.net/npm/axios@1.3.5/dist/axios.min.js";
 import apiClient from "./src/frameworks/apiClient.js";
 
 (async () => {

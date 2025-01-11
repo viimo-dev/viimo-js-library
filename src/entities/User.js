@@ -14,21 +14,38 @@ export class User {
     updatedAt,
     UserType,
   }) {
-    console.log("Valores recibidos en User:", userId); // Verifica si userId tiene un valor
-    this.userId = userId; // Cambiado de this.id a this.userId
-    this.firebaseId = userFirebaseId;
-    this.email = userEmail;
-    this.image = userImage;
-    this.typeId = userTypeId;
-    this.name = userName;
-    this.address = userAddress;
-    this.phone = userPhone;
-    this.dob = userDob;
-    this.isAdmin = isUserAdmin;
+    console.log("Valores recibidos en User:", {
+      userId,
+      userFirebaseId,
+      userEmail,
+      userImage,
+      userTypeId,
+      userName,
+      userAddress,
+      userPhone,
+      userDob,
+      isUserAdmin,
+      createdAt,
+      updatedAt,
+      UserType,
+    });
+  
+    // Asignación exacta
+    this.userId = userId;
+    this.userFirebaseId = userFirebaseId;
+    this.userEmail = userEmail;
+    this.userImage = userImage;
+    this.userTypeId = userTypeId;
+    this.userName = userName;
+    this.userAddress = userAddress;
+    this.userPhone = userPhone;
+    this.userDob = userDob;
+    this.isUserAdmin = isUserAdmin;
     this.createdAt = createdAt;
     this.updatedAt = updatedAt;
     this.userType = UserType?.userTypeName || "Unknown"; // Valor por defecto
   }
+  
   
   
     // Método para verificar si el email es válido
