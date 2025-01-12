@@ -60,7 +60,7 @@ export class EventAPIAdapter {
       title: rawEvent.eventTitle,
       startDate: rawEvent.eventStart,
       endDate: rawEvent.eventEnd,
-      // Suponiendo que el statusId=1 significa "activo"
+      // Suponiendo que eventStatusId=1 significa "activo"
       active: rawEvent.eventStatusId === 1,
       recurrent: rawEvent.isRecurrent || false,
       // Ajusta más propiedades si es necesario
@@ -83,18 +83,17 @@ export class EventAPIAdapter {
     const startDate = new Date(year, month - 1, day, 10, 0, 0).toISOString();
     const endDate = new Date(year, month - 1, day, 11, 0, 0).toISOString();
 
-    // Determinar el status ID según si está activo o no
-    // (Ajusta según la lógica real de tu backend)
+    // Determinar el status ID según si está activo o no (1=Activo, 2=Inactivo, etc.)
     const eventStatusId = formData.isActive ? 1 : 2;
 
-    // Devolvemos el objeto tal y como el backend lo espera
+    // Retornamos el objeto tal y como el backend lo espera
     return {
       userId: userId,
       companyId: 1,                  // Valor fijo por ahora
       eventName: formData.internalName || "No internal name",
       eventTypeId: 1,               // Valor fijo por ahora
       eventDescription: formData.description || "",
-      addressId: 1,                  // OJO: comprueba si debe ser "addressId"
+      addressId: 1,                 // Asegúrate de que exista un address con ID=1
       eventStart: startDate,
       eventEnd: endDate,
       eventSaleStart: startDate,
