@@ -89,21 +89,20 @@ export class EventAPIAdapter {
 
     // Retornamos el objeto tal y como el backend lo espera
     return {
-      "userId": userId,
-      "companyId": "1",                  // Valor fijo por ahora
-      "eventName": formData.internalName || "No internal name",
-      "eventTypeId": "1",               // Valor fijo por ahora
-      "eventDescription": formData.description || "",
-      "addressId": "1",                 // Asegúrate de que exista un address con ID=1
-      "eventStart": startDate,
-      "eventEnd": endDate,
-      "eventSaleStart": startDate,
-      "eventSaleEnd": endDate,
-      "eventTitle": formData.eventName || "No public name",
-      "eventSubtitle": formData.image || "No image",
-      "eventStatusId": eventStatusId || "0",
-      "eventSaleIsOpen": formData.isActive,
-      "isRecurrent": true,
+      userId: userId,
+      companyId: "2",                  // Valor fijo por ahora
+      eventName: formData.internalName || "No internal name",
+      eventTypeId: "2",               // Valor fijo por ahora
+      eventDescription: formData.description || "",
+      addressId: "1",                 // Asegúrate de que exista un address con ID=1
+      eventStart: startDate,
+      eventEnd: endDate,
+      eventSaleStart: startDate,
+      eventSaleEnd: endDate,
+      eventTitle: formData.eventName || "No public name",
+      eventSubtitle: formData.image || "No image",
+      eventStatusId: eventStatusId || "0",
+      isRecurrent: true,
     };
   }
 }
