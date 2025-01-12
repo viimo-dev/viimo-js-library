@@ -100,7 +100,7 @@ export class EventAPIAdapter {
       eventSaleStart: startDate,
       eventSaleEnd: endDate,
       eventTitle: formData.eventName || "No public name",
-      eventSubtitle: formData.image || "No image",
+      eventSubtitle: "im a Subtitle",
       eventStatusId: eventStatusId || "0",
       isRecurrent: true,
     };
