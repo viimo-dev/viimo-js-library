@@ -74,7 +74,7 @@ export class EventAPIAdapter {
    */
   static transformToBackend(formData) {
     // Asegurarnos de que userId, day, month, year sean números
-    const userId = parseInt(formData.userId, 10) || 1;
+    const userId = formData.userId;
     const day = parseInt(formData.day, 10) || 1;
     const month = parseInt(formData.month, 10) || 1;
     const year = parseInt(formData.year, 10) || 2025;
@@ -89,7 +89,7 @@ export class EventAPIAdapter {
 
     // Retornamos el objeto tal y como el backend lo espera
     return {
-      userId: "userId",
+      userId: userId,
       companyId: "1",                  // Valor fijo por ahora
       eventName: formData.internalName || "No internal name",
       eventTypeId: "1",               // Valor fijo por ahora
