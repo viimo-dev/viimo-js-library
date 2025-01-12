@@ -2,7 +2,7 @@
 
 import { EventAPIAdapter } from "../adapters/EventAPIAdapter.js";
 import { EventFormComponent } from "../components/dev/EventFormComponent.js";
-import { EventCardComponent } from "../components/dev/EventCardComponent.js"; // <-- Aquí importas tu componente de tarjeta
+import { EventCardComponent } from "../components/dev/EventCardComponent.js"; 
 import { UserAPIAdapter } from "../adapters/UserAPIAdapter.js";
 
 export class EventManager {
