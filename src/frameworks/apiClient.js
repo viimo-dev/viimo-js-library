@@ -23,6 +23,7 @@ apiClient.interceptors.response.use(
     const status = error.response?.status || "Sin respuesta del servidor";
     const message = error.response?.data || error.message || "Error desconocido";
     console.error(`Error en la API: Status: ${status}, Mensaje: ${message}`);
+    console.log("Estamos en apiclient", JSON.stringify(error.response));
     return Promise.reject({ status, message });
   }
 );
