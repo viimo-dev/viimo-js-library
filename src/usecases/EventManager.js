@@ -1,5 +1,7 @@
 import { EventAPIAdapter } from "../adapters/EventAPIAdapter.js";
 import { EventCardComponent } from "../components/dev/EventCardComponent.js";
+import { EventFormComponent } from "../components/dev/EventFormComponent.js";
+import { UserAPIAdapter } from "../adapters/UserAPIAdapter.js";
 
 export class EventManager {
   static async renderEventsInGrid(containerId) {
@@ -35,6 +37,31 @@ export class EventManager {
       });
     } catch (error) {
       console.error("Error al renderizar eventos en el grid:", error.message || error);
+    }
+  }
+
+  static async renderEventForm(containerId) {
+    try {
+      const container = document.getElementById(containerId);
+      if (!container) throw new Error(`No se encontró el contenedor con ID: ${containerId}`);
+
+      const users = await UserAPIAdapter.getAllUsers(); // Obtener usuarios para rellenar el select
+      const eventForm = new EventFormComponent(users, async (formData) => {
+        try {
+          const newEvent = await EventAPIAdapter.createEvent(formData);
+          console.log("Evento creado con éxito:", newEvent);
+          alert("Evento creado correctamente.");
+          await this.renderEventsInGrid("results-events"); // Recargar el grid de eventos
+        } catch (error) {
+          console.error("Error al crear el evento:", error.message || error);
+          alert("Hubo un error al crear el evento.");
+        }
+      });
+
+      container.innerHTML = ""; // Limpia el contenedor antes de renderizar el formulario
+      container.appendChild(eventForm.getElement());
+    } catch (error) {
+      console.error("Error al renderizar el formulario de eventos:", error.message || error);
     }
   }
 }
