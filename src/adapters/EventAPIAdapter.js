@@ -33,6 +33,7 @@ export class EventAPIAdapter {
 
       // 2) Hacer la petición POST
       const response = await apiClient.post("/events", payload);
+      console.log("Payload 2 que se envía a /events:", response);
 
       // 3) Devolver la respuesta convertida a la entidad Event (opcional)
       return this.transformToEntity(response.data);
