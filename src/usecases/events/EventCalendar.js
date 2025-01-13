@@ -1,5 +1,5 @@
-import { EventAPIAdapter } from "../adapters/EventAPIAdapter.js";
-import { EventList } from "../components/events/EventList.js";
+import { EventAPIAdapter } from "../../adapters/EventAPIAdapter.js";
+import { EventList } from "../../components/events/EventList.js";
 
 export class EventCalendar {
   static async renderEvents(containerId) {
