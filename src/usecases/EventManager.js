@@ -2,7 +2,7 @@
 
 import { EventAPIAdapter } from "../adapters/EventAPIAdapter.js";
 import { EventFormComponent } from "../components/dev/EventFormComponent.js";
-import { EventCardComponent } from "../components/dev/EventCardComponent.js"; 
+import { EventCardComponent } from "../components/dev/EventCardComponent.js";
 import { UserAPIAdapter } from "../adapters/UserAPIAdapter.js";
 
 export class EventManager {
@@ -24,9 +24,24 @@ export class EventManager {
 
       // 3) Crear una tarjeta (EventCardComponent) por cada evento
       events.forEach((event) => {
-        // Instanciar la tarjeta
         const eventCard = new EventCardComponent(event);
-        // Insertarla en el contenedor
+
+        // 4) Asignar la acción de "Eliminar" a cada tarjeta
+        eventCard.setDeleteAction(async (eventId) => {
+          try {
+            // Llamar al adapter para eliminar
+            await EventAPIAdapter.deleteEvent(eventId);
+            console.log(`Evento con ID ${eventId} eliminado correctamente`);
+
+            // Recargar la lista de eventos
+            await this.renderEventsInGrid(containerId);
+          } catch (error) {
+            console.error(`Error al eliminar el evento con ID ${eventId}:`, error);
+            // Muestra un mensaje en la tarjeta
+            eventCard.setErrorText("Error al eliminar");
+          }
+        });
+
         container.appendChild(eventCard.getElement());
       });
 
@@ -36,7 +51,7 @@ export class EventManager {
   }
 
   /**
-   * Renderiza el formulario de creación/edición de eventos en el contenedor indicado
+   * Renderiza el formulario de creación de eventos en el contenedor indicado
    */
   static async renderEventForm(containerId) {
     try {
@@ -45,32 +60,28 @@ export class EventManager {
         throw new Error(`No se encontró el contenedor con ID: ${containerId}`);
       }
 
-      // 1) Obtener usuarios para rellenar el select de "usuario" en el formulario
+      // 1) Obtener usuarios para rellenar el select
       const users = await UserAPIAdapter.getAllUsers();
 
-      // 2) Crear la instancia del formulario de eventos
+      // 2) Crear la instancia del formulario
       const eventForm = new EventFormComponent(users, async (formData) => {
         try {
-          // 3) Llamar a createEvent en el adapter
+          // Crear el evento
           const newEvent = await EventAPIAdapter.createEvent(formData);
           console.log("Evento creado con éxito:", newEvent);
-
           alert("Evento creado correctamente.");
 
-          // 4) Recargar la lista de eventos (asumiendo que el ID del contenedor de eventos es "results-events")
+          // 3) Recargar la lista de eventos
           await this.renderEventsInGrid("results-events");
-
         } catch (error) {
           console.error("Error al crear el evento:", error.message || error);
           alert("Hubo un error al crear el evento.");
         }
       });
 
-      // 3) Limpiar el contenedor antes de renderizar
+      // Limpiar e inyectar el formulario
       container.innerHTML = "";
-      // 4) Insertar el formulario en la página
       container.appendChild(eventForm.getElement());
-
     } catch (error) {
       console.error("Error al renderizar el formulario:", error);
     }
