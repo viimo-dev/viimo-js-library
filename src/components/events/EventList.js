@@ -37,7 +37,15 @@ export class EventList {
 
       // Añadir la tarjeta al grid
       eventsList.appendChild(eventCard.getElement());
-      Webflow.require('ix2').init();  // Fuerza Webflow a recalcular las interacciones
+
+      // Re-inicializar las interacciones de Webflow
+    if (window.Webflow && window.Webflow.require) {
+        const ix2 = window.Webflow.require('ix2');
+        if (ix2 && typeof ix2.init === 'function') {
+        ix2.init();
+        }
+    }
+    
     } catch (error) {
       console.error("Error al añadir un evento al grid:", error.message || error);
     }
