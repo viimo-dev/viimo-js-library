@@ -1,88 +1,69 @@
 export class EventCalendarFilters {
     constructor({ onFilterChange }) {
-      this.onFilterChange = onFilterChange;
       this.filters = {
-        showUpcoming: false, // false: All events, true: Only upcoming
-        viewByMonth: true,   // true: By month, false: By year
-        searchQuery: "",     // Cadena de búsqueda para el filtro por nombre
+        upcomingOnly: false, // "All events" o "Only upcoming"
+        temporalidad: "Month", // "Month" o "Year"
+        searchQuery: "", // Texto del input de búsqueda
       };
+      this.onFilterChange = onFilterChange;
       this.element = this.createElement();
+      this.addEventListeners();
     }
   
     createElement() {
       const template = document.createElement("template");
       template.innerHTML = `
         <div class="form w-form">
-          <form id="events-filters" name="events-filters" class="events-header-filters">
-            <label id="all-events" class="filtro w-radio">
-              <div class="w-form-formradioinput w-form-formradioinput--inputType-custom radio-buton w-radio-input w--redirected-checked"></div>
-              <input type="radio" name="event-type" value="all" style="opacity:0;position:absolute;z-index:-1" checked>
-              <span class="paragraph w-form-label">All events</span>
+          <form id="events-filters" class="events-header-filters">
+            <label class="filtro w-radio">
+              <div class="w-form-formradioinput radio-buton w-radio-input"></div>
+              <input type="radio" name="upcoming" value="all" checked>
+              <span>All events</span>
             </label>
-            <label id="upcoming-events" class="filtro w-radio">
-              <div class="w-form-formradioinput w-form-formradioinput--inputType-custom radio-buton w-radio-input"></div>
-              <input type="radio" name="event-type" value="upcoming" style="opacity:0;position:absolute;z-index:-1">
-              <span class="paragraph w-form-label">Only upcoming</span>
+            <label class="filtro w-radio">
+              <div class="w-form-formradioinput radio-buton w-radio-input"></div>
+              <input type="radio" name="upcoming" value="upcoming">
+              <span>Only upcoming</span>
             </label>
             <div class="filters-separator"></div>
-            <label id="month-events" class="filtro w-radio">
-              <div class="w-form-formradioinput w-form-formradioinput--inputType-custom radio-buton w-radio-input w--redirected-checked"></div>
-              <input type="radio" name="time-frame" value="month" style="opacity:0;position:absolute;z-index:-1" checked>
-              <span class="paragraph w-form-label">Month</span>
+            <label class="filtro w-radio">
+              <div class="w-form-formradioinput radio-buton w-radio-input"></div>
+              <input type="radio" name="temporalidad" value="Month" checked>
+              <span>Month</span>
             </label>
-            <label id="events-year" class="filtro w-radio">
-              <div class="w-form-formradioinput w-form-formradioinput--inputType-custom radio-buton w-radio-input"></div>
-              <input type="radio" name="time-frame" value="year" style="opacity:0;position:absolute;z-index:-1">
-              <span class="paragraph w-form-label">Year</span>
+            <label class="filtro w-radio">
+              <div class="w-form-formradioinput radio-buton w-radio-input"></div>
+              <input type="radio" name="temporalidad" value="Year">
+              <span>Year</span>
             </label>
             <div class="filters-separator"></div>
             <div class="events-name-filter">
-              <img src="https://cdn.prod.website-files.com/677e577ef5b94953b8c1831e/677edba3ffe29468b361c65c_Vector.png" alt="">
-              <input 
-                type="text" 
-                placeholder="Filter by name" 
-                id="filter-by-name" 
-                class="events-name-filter-field w-input"
-              />
+              <input class="events-name-filter-field" placeholder="Filter by name" type="text">
             </div>
           </form>
         </div>
-      `.trim();
+      `;
+      return template.content.firstChild;
+    }
   
-      const element = template.content.firstChild;
-  
-      // Añadir listeners a los inputs
-      element.querySelectorAll("input[type='radio']").forEach((input) => {
-        input.addEventListener("change", (e) => this.handleFilterChange(e));
+    addEventListeners() {
+      const form = this.element.querySelector("#events-filters");
+      form.addEventListener("change", () => {
+        const formData = new FormData(form);
+        this.filters.upcomingOnly = formData.get("upcoming") === "upcoming";
+        this.filters.temporalidad = formData.get("temporalidad");
+        this.onFilterChange();
       });
   
-      const searchInput = element.querySelector("#filter-by-name");
-      searchInput.addEventListener("input", (e) => this.handleSearchQueryChange(e));
-  
-      return element;
+      const searchInput = this.element.querySelector(".events-name-filter-field");
+      searchInput.addEventListener("input", (event) => {
+        this.filters.searchQuery = event.target.value;
+        this.onFilterChange();
+      });
     }
   
-    handleFilterChange(event) {
-      const { name, value } = event.target;
-  
-      if (name === "event-type") {
-        this.filters.showUpcoming = value === "upcoming";
-      } else if (name === "time-frame") {
-        this.filters.viewByMonth = value === "month";
-      }
-  
-      this.emitFilterChange();
-    }
-  
-    handleSearchQueryChange(event) {
-      this.filters.searchQuery = event.target.value.trim().toLowerCase();
-      this.emitFilterChange();
-    }
-  
-    emitFilterChange() {
-      if (this.onFilterChange) {
-        this.onFilterChange(this.filters);
-      }
+    getFilters() {
+      return this.filters;
     }
   
     getElement() {
