@@ -11,84 +11,81 @@ export class EventCalendar {
       const filtersContainer = document.getElementById(filtersContainerId);
 
       if (!eventsContainer || !calendyContainer || !filtersContainer) {
-        throw new Error("No se encontraron uno o más contenedores especificados.");
+        throw new Error("Uno o más contenedores no se encontraron en el DOM.");
       }
 
       // Obtener eventos del backend
-      const allEvents = await EventAPIAdapter.getAllEvents();
+      const events = await EventAPIAdapter.getAllEvents();
 
-      // Crear instancia de filtros
+      // Crear y renderizar los filtros
       const filters = new EventCalendarFilters({
         onFilterChange: () => {
-          this.updateEventList(calendy, allEvents, eventsContainer, filters.getFilters());
+          EventCalendar.updateEventList(
+            calendy.currentMonth,
+            calendy.currentYear,
+            events,
+            eventsContainer,
+            filters.getFilters()
+          );
         },
       });
 
-      // Crear instancia de Calendy
+      filtersContainer.innerHTML = ""; // Limpiar el contenedor de filtros
+      filtersContainer.appendChild(filters.getElement());
+
+      // Crear y renderizar Calendy
       const today = new Date();
       const calendy = new Calendy({
         currentMonth: today.getMonth(),
         currentYear: today.getFullYear(),
-        events: allEvents.map(event => ({
+        events: events.map((event) => ({
           date: event.startDate.split("T")[0],
           count: 1,
         })),
-        onMonthChange: () => {
-          this.updateEventList(calendy, allEvents, eventsContainer, filters.getFilters());
+        onMonthChange: (newMonth, newYear) => {
+          EventCalendar.updateEventList(newMonth, newYear, events, eventsContainer, filters.getFilters());
         },
       });
 
-      // Renderizar Calendy y filtros
-      calendyContainer.innerHTML = "";
+      calendyContainer.innerHTML = ""; // Limpiar el contenedor de calendy
       calendyContainer.appendChild(calendy.getElement());
 
-      filtersContainer.innerHTML = "";
-      filtersContainer.appendChild(filters.getElement());
-
-      // Renderizar lista de eventos inicial
-      this.updateEventList(calendy, allEvents, eventsContainer, filters.getFilters());
+      // Renderizar la lista de eventos inicial
+      EventCalendar.updateEventList(
+        calendy.currentMonth,
+        calendy.currentYear,
+        events,
+        eventsContainer,
+        filters.getFilters()
+      );
     } catch (error) {
       console.error("Error al renderizar el calendario de eventos:", error.message || error);
     }
   }
 
-  static updateEventList(calendy, allEvents, eventsContainer, filters) {
-    const { currentMonth, currentYear } = calendy;
-
-    // Filtrar eventos por mes/año
-    let filteredEvents = allEvents.filter(event => {
+  static updateEventList(month, year, allEvents, eventsContainer, filters) {
+    // Filtrar eventos para el mes y año dados según filtros
+    const filteredEvents = allEvents.filter((event) => {
       const eventDate = new Date(event.startDate);
-      if (filters.temporalidad === "Month") {
-        return (
-          eventDate.getMonth() === currentMonth && eventDate.getFullYear() === currentYear
-        );
-      } else if (filters.temporalidad === "Year") {
-        return eventDate.getFullYear() === currentYear;
-      }
-      return false; // Fallback (no debería ocurrir)
+      const isUpcoming = filters.upcomingOnly ? eventDate >= new Date() : true;
+      const matchesTemporalidad =
+        filters.temporalidad === "Month"
+          ? eventDate.getMonth() === month && eventDate.getFullYear() === year
+          : eventDate.getFullYear() === year;
+      const matchesSearch = event.title.toLowerCase().includes(filters.searchQuery.toLowerCase());
+
+      return isUpcoming && matchesTemporalidad && matchesSearch;
     });
 
-    // Aplicar filtro de "Only upcoming"
-    if (filters.upcomingOnly) {
-      const today = new Date();
-      filteredEvents = filteredEvents.filter(event => new Date(event.startDate) >= today);
-    }
-
-    // Aplicar filtro por nombre
-    if (filters.searchQuery) {
-      filteredEvents = filteredEvents.filter(event =>
-        event.title.toLowerCase().includes(filters.searchQuery.toLowerCase())
-      );
-    }
-
-    // Crear instancia de EventList con los eventos filtrados
+    // Crear instancia de EventList
     const eventListTitle =
       filters.temporalidad === "Month"
-        ? `${calendy.getMonthName()} ${currentYear}`
-        : `Events of ${currentYear}`;
+        ? `${new Intl.DateTimeFormat("en-US", { month: "long" }).format(new Date(year, month))} ${year}`
+        : `Events in ${year}`;
     const eventList = new EventList(eventListTitle);
 
-    filteredEvents.forEach(event => eventList.addEvent(event));
+    // Añadir eventos filtrados
+    filteredEvents.forEach((event) => eventList.addEvent(event));
 
     // Renderizar EventList en el contenedor
     eventsContainer.innerHTML = "";

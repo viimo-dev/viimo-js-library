@@ -9,7 +9,7 @@ export class EventCalendarFilters {
   
       // Crear el elemento y validar que sea válido
       this.element = this.createElement();
-      if (!this.element) {
+      if (!(this.element instanceof HTMLElement)) {
         throw new Error("Error al inicializar EventCalendarFilters: el elemento no se creó correctamente.");
       }
   
@@ -51,7 +51,8 @@ export class EventCalendarFilters {
         </div>
       `;
       const element = template.content.firstChild;
-      if (!element) {
+  
+      if (!(element instanceof HTMLElement)) {
         throw new Error("Error al crear el elemento: template está vacío o malformado.");
       }
       return element;
