@@ -1,9 +1,10 @@
 export class Calendy {
-    constructor({ currentMonth, currentYear, events = [] }) {
+    constructor({ currentMonth, currentYear, events = [], onMonthChange = null }) {
       this.currentMonth = currentMonth; // Mes actual (0 = Enero, 11 = Diciembre)
-      this.currentYear = currentYear;  // Año actual
+      this.currentYear = currentYear; // Año actual
       this.events = events; // Lista de eventos [{ date: '2025-01-04', count: 1 }, ...]
       this.selectedDate = new Date(); // Fecha seleccionada (por defecto, hoy)
+      this.onMonthChange = onMonthChange; // Callback para notificar cambios de mes
       this.element = this.createElement();
     }
   
@@ -35,15 +36,15 @@ export class Calendy {
           </div>
         </div>
       `.trim();
-      const element = template.content.firstChild;
   
+      const element = template.content.firstChild;
       this.addEventListeners(element);
       return element;
     }
   
     renderDays() {
       const daysInMonth = new Date(this.currentYear, this.currentMonth + 1, 0).getDate();
-      const startDay = new Date(this.currentYear, this.currentMonth, 1).getDay(); // Día de inicio
+      const startDay = new Date(this.currentYear, this.currentMonth, 1).getDay(); // Día de inicio (0 = Domingo)
       const days = [];
   
       // Días previos al inicio del mes (vacíos)
@@ -106,6 +107,12 @@ export class Calendy {
         this.currentMonth = 0;
         this.currentYear++;
       }
+  
+      // Notificar cambio de mes
+      if (this.onMonthChange) {
+        this.onMonthChange(this.currentMonth, this.currentYear);
+      }
+  
       this.updateCalendar();
     }
   
