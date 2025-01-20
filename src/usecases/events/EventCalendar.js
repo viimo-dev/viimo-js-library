@@ -46,6 +46,7 @@ export class EventCalendar {
 
   static updateEventList(month, year, allEvents, eventsContainer) {
     // Filtrar eventos para el mes y año dados
+    console.log(`Updating Event List for ${month + 1}/${year}`);
     const filteredEvents = allEvents.filter(event => {
       const eventDate = new Date(event.startDate);
       return eventDate.getMonth() === month && eventDate.getFullYear() === year;

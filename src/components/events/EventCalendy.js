@@ -110,6 +110,7 @@ export class Calendy {
   
       // Notificar cambio de mes
       if (this.onMonthChange) {
+        console.log("onMonthChange triggered:", this.currentMonth, this.currentYear);
         this.onMonthChange(this.currentMonth, this.currentYear);
       }
   
