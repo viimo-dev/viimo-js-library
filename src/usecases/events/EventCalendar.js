@@ -3,9 +3,10 @@ import { EventList } from "../../components/events/EventList.js";
 import { Calendy } from "../../components/events/EventCalendy.js";
 
 export class EventCalendar {
-  static async renderEvents(containerId) {
+  static async renderEvents(eventsContainerId, calendyContainerID) {
     try {
-      const container = document.getElementById(containerId);
+      const eventsContainer = document.getElementById(eventsContainerId);
+      const calendyContainer = document.getElementById(calendyContainerID);
       if (!container) {
         throw new Error(`No se encontró el contenedor con ID: ${containerId}`);
       }
@@ -33,9 +34,10 @@ export class EventCalendar {
       });
 
       // Renderizar Calendy y EventList en el DOM
-      container.innerHTML = ""; // Limpiar contenedor antes de añadir
-      container.appendChild(calendy.getElement());
-      container.appendChild(eventList.getElement());
+      calendyContainer.innerHTML = ""; // Limpiar contenedor antes de añadir
+      eventsContainer.innerHTML = ""; // Limpiar contenedor antes de añadir
+      calendyContainer.appendChild(calendy.getElement());
+      eventsContainer.appendChild(eventList.getElement());
     } catch (error) {
       console.error("Error al renderizar el calendario de eventos:", error.message || error);
     }
