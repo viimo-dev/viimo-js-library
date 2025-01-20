@@ -1,94 +1,94 @@
-import { EventAPIAdapter } from "../../adapters/EventAPIAdapter.js";
-import { EventList } from "../../components/events/EventList.js";
-import { Calendy } from "../../components/events/EventCalendy.js";
-import { EventCalendarFilters } from "../../components/events/EventCalendarFilters.js";
+export class EventCalendarFilters {
+  constructor({ onFilterChange }) {
+    this.filters = {
+      upcomingOnly: false, // "All events" o "Only upcoming"
+      temporalidad: "Month", // "Month" o "Year"
+      searchQuery: "", // Texto del input de búsqueda
+    };
+    this.onFilterChange = onFilterChange;
 
-export class EventCalendar {
-  static async renderEvents(eventsContainerId, calendyContainerId, filtersContainerId) {
-    try {
-      const eventsContainer = document.getElementById(eventsContainerId);
-      const calendyContainer = document.getElementById(calendyContainerId);
-      const filtersContainer = document.getElementById(filtersContainerId);
-
-      if (!eventsContainer || !calendyContainer || !filtersContainer) {
-        throw new Error("Uno o más contenedores no se encontraron en el DOM.");
-      }
-
-      // Obtener eventos del backend
-      const events = await EventAPIAdapter.getAllEvents();
-
-      // Crear y renderizar los filtros
-      const filters = new EventCalendarFilters({
-        onFilterChange: () => {
-          EventCalendar.updateEventList(
-            calendy.currentMonth,
-            calendy.currentYear,
-            events,
-            eventsContainer,
-            filters.getFilters()
-          );
-        },
-      });
-
-      filtersContainer.innerHTML = ""; // Limpiar el contenedor de filtros
-      filtersContainer.appendChild(filters.getElement());
-
-      // Crear y renderizar Calendy
-      const today = new Date();
-      const calendy = new Calendy({
-        currentMonth: today.getMonth(),
-        currentYear: today.getFullYear(),
-        events: events.map((event) => ({
-          date: event.startDate.split("T")[0],
-          count: 1,
-        })),
-        onMonthChange: (newMonth, newYear) => {
-          EventCalendar.updateEventList(newMonth, newYear, events, eventsContainer, filters.getFilters());
-        },
-      });
-
-      calendyContainer.innerHTML = ""; // Limpiar el contenedor de calendy
-      calendyContainer.appendChild(calendy.getElement());
-
-      // Renderizar la lista de eventos inicial
-      EventCalendar.updateEventList(
-        calendy.currentMonth,
-        calendy.currentYear,
-        events,
-        eventsContainer,
-        filters.getFilters()
-      );
-    } catch (error) {
-      console.error("Error al renderizar el calendario de eventos:", error.message || error);
+    // Crear el elemento y validar que se cree correctamente
+    this.element = this.createElement();
+    if (!this.element || !(this.element instanceof HTMLElement)) {
+      throw new Error("Error al crear el elemento: template está vacío o malformado.");
     }
+
+    // Añadir event listeners
+    this.addEventListeners();
   }
 
-  static updateEventList(month, year, allEvents, eventsContainer, filters) {
-    // Filtrar eventos para el mes y año dados según filtros
-    const filteredEvents = allEvents.filter((event) => {
-      const eventDate = new Date(event.startDate);
-      const isUpcoming = filters.upcomingOnly ? eventDate >= new Date() : true;
-      const matchesTemporalidad =
-        filters.temporalidad === "Month"
-          ? eventDate.getMonth() === month && eventDate.getFullYear() === year
-          : eventDate.getFullYear() === year;
-      const matchesSearch = event.title.toLowerCase().includes(filters.searchQuery.toLowerCase());
+  createElement() {
+    const template = document.createElement("template");
+    template.innerHTML = `
+      <div class="form w-form">
+        <form id="events-filters" class="events-header-filters">
+          <label class="filtro w-radio">
+            <div class="w-form-formradioinput radio-buton w-radio-input"></div>
+            <input type="radio" name="upcoming" value="all" checked>
+            <span>All events</span>
+          </label>
+          <label class="filtro w-radio">
+            <div class="w-form-formradioinput radio-buton w-radio-input"></div>
+            <input type="radio" name="upcoming" value="upcoming">
+            <span>Only upcoming</span>
+          </label>
+          <div class="filters-separator"></div>
+          <label class="filtro w-radio">
+            <div class="w-form-formradioinput radio-buton w-radio-input"></div>
+            <input type="radio" name="temporalidad" value="Month" checked>
+            <span>Month</span>
+          </label>
+          <label class="filtro w-radio">
+            <div class="w-form-formradioinput radio-buton w-radio-input"></div>
+            <input type="radio" name="temporalidad" value="Year">
+            <span>Year</span>
+          </label>
+          <div class="filters-separator"></div>
+          <div class="events-name-filter">
+            <input class="events-name-filter-field" placeholder="Filter by name" type="text">
+          </div>
+        </form>
+      </div>
+    `.trim(); // Asegurarnos de eliminar espacios innecesarios
 
-      return isUpcoming && matchesTemporalidad && matchesSearch;
+    const element = template.content.firstChild;
+
+    if (!element || !(element instanceof HTMLElement)) {
+      console.error("El template no generó un elemento válido.");
+    }
+
+    return element;
+  }
+
+  addEventListeners() {
+    const form = this.element.querySelector("#events-filters");
+    if (!form) {
+      throw new Error("No se encontró el formulario #events-filters en el elemento.");
+    }
+
+    form.addEventListener("change", () => {
+      const formData = new FormData(form);
+      this.filters.upcomingOnly = formData.get("upcoming") === "upcoming";
+      this.filters.temporalidad = formData.get("temporalidad");
+      this.onFilterChange();
     });
 
-    // Crear instancia de EventList
-    const eventListTitle =
-      filters.temporalidad === "Month"
-        ? `${new Intl.DateTimeFormat("en-US", { month: "long" }).format(new Date(year, month))} ${year}`
-        : `Events in ${year}`;
-    const eventList = new EventList(eventListTitle);
+    const searchInput = this.element.querySelector(".events-name-filter-field");
+    if (!searchInput) {
+      throw new Error("No se encontró el input .events-name-filter-field en el elemento.");
+    }
 
-    // Añadir eventos filtrados
-    filteredEvents.forEach((event) => eventList.addEvent(event));
+    searchInput.addEventListener("input", (event) => {
+      this.filters.searchQuery = event.target.value;
+      this.onFilterChange();
+    });
+  }
 
-    // Renderizar EventList en el contenedor
-    eventsContainer.innerHTML = "";
-    eventsContainer.appendChild(eventList.getElement());
+  getFilters() {
+    return this.filters;
+  }
+
+  getElement() {
+    return this.element;
   }
 }
