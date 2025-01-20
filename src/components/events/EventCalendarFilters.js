@@ -7,13 +7,13 @@ export class EventCalendarFilters {
       };
       this.onFilterChange = onFilterChange;
   
-      // Crear el elemento y validar que sea válido
+      // Crear el elemento y validar que se cree correctamente
       this.element = this.createElement();
-      if (!(this.element instanceof HTMLElement)) {
-        throw new Error("Error al inicializar EventCalendarFilters: el elemento no se creó correctamente.");
+      if (!this.element || !(this.element instanceof HTMLElement)) {
+        throw new Error("Error al crear el elemento: template está vacío o malformado.");
       }
   
-      // Añadir los event listeners
+      // Añadir event listeners
       this.addEventListeners();
     }
   
@@ -49,12 +49,14 @@ export class EventCalendarFilters {
             </div>
           </form>
         </div>
-      `;
+      `.trim(); // Asegurarnos de eliminar espacios innecesarios
+  
       const element = template.content.firstChild;
   
-      if (!(element instanceof HTMLElement)) {
-        throw new Error("Error al crear el elemento: template está vacío o malformado.");
+      if (!element || !(element instanceof HTMLElement)) {
+        console.error("El template no generó un elemento válido.");
       }
+  
       return element;
     }
   
@@ -90,4 +92,5 @@ export class EventCalendarFilters {
       return this.element;
     }
   }
+  
   
