@@ -7,10 +7,13 @@ export class EventCalendar {
     try {
       const eventsContainer = document.getElementById(eventsContainerId);
       const calendyContainer = document.getElementById(calendyContainerID);
-      if (!container) {
-        throw new Error(`No se encontró el contenedor con ID: ${containerId}`);
+      if (!eventsContainer) {
+        throw new Error(`No se encontró el contenedor con ID: ${eventsContainerId}`);
       }
-
+      if (!calendyContainer) {
+        throw new Error(`No se encontró el contenedor con ID: ${calendyContainerID}`);
+      }
+      
       // Obtener eventos del backend
       const events = await EventAPIAdapter.getAllEvents();
 
