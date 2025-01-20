@@ -6,14 +6,7 @@ export class EventCalendarFilters {
         searchQuery: "", // Texto del input de búsqueda
       };
       this.onFilterChange = onFilterChange;
-  
-      // Crear el elemento y validar que se cree correctamente
       this.element = this.createElement();
-      if (!this.element || !(this.element instanceof HTMLElement)) {
-        throw new Error("Error al crear el elemento: template está vacío o malformado.");
-      }
-  
-      // Añadir event listeners
       this.addEventListeners();
     }
   
@@ -22,62 +15,51 @@ export class EventCalendarFilters {
       template.innerHTML = `
         <div class="form w-form">
           <form id="events-filters" class="events-header-filters">
-            <label class="filtro w-radio">
-              <div class="w-form-formradioinput radio-buton w-radio-input"></div>
-              <input type="radio" name="upcoming" value="all" checked>
-              <span>All events</span>
+            <label id="all-events" class="filtro w-radio">
+              <div class="w-form-formradioinput w-form-formradioinput--inputType-custom radio-buton w-radio-input w--redirected-checked"></div>
+              <input type="radio" name="Upcoming" id="filter-upcoming" data-name="Upcoming" style="opacity:0;position:absolute;z-index:-1" checked>
+              <span class="paragraph w-form-label" for="filter-upcoming">All events</span>
             </label>
-            <label class="filtro w-radio">
-              <div class="w-form-formradioinput radio-buton w-radio-input"></div>
-              <input type="radio" name="upcoming" value="upcoming">
-              <span>Only upcoming</span>
+            <label id="upcoming-events" class="filtro w-radio">
+              <div class="w-form-formradioinput w-form-formradioinput--inputType-custom radio-buton w-radio-input"></div>
+              <input type="radio" name="Upcoming" id="radio-3" data-name="Upcoming" style="opacity:0;position:absolute;z-index:-1">
+              <span class="paragraph w-form-label" for="radio-3">Only upcoming</span>
             </label>
             <div class="filters-separator"></div>
-            <label class="filtro w-radio">
-              <div class="w-form-formradioinput radio-buton w-radio-input"></div>
-              <input type="radio" name="temporalidad" value="Month" checked>
-              <span>Month</span>
+            <label id="month-events" class="filtro w-radio">
+              <div class="w-form-formradioinput w-form-formradioinput--inputType-custom radio-buton w-radio-input w--redirected-checked"></div>
+              <input type="radio" name="Temporalidad" id="filter-month" data-name="Temporalidad" style="opacity:0;position:absolute;z-index:-1" checked>
+              <span class="paragraph w-form-label" for="filter-month">Month</span>
             </label>
-            <label class="filtro w-radio">
-              <div class="w-form-formradioinput radio-buton w-radio-input"></div>
-              <input type="radio" name="temporalidad" value="Year">
-              <span>Year</span>
+            <label id="events-year" class="filtro w-radio">
+              <div class="w-form-formradioinput w-form-formradioinput--inputType-custom radio-buton w-radio-input"></div>
+              <input type="radio" name="Temporalidad" id="radio-2" data-name="Temporalidad" style="opacity:0;position:absolute;z-index:-1">
+              <span class="paragraph w-form-label" for="radio-2">Year</span>
             </label>
             <div class="filters-separator"></div>
             <div class="events-name-filter">
-              <input class="events-name-filter-field" placeholder="Filter by name" type="text">
+              <img src="https://cdn.prod.website-files.com/677e577ef5b94953b8c1831e/677edba3ffe29468b361c65c_Vector.png" alt="">
+              <input class="events-name-filter-field w-input" maxlength="256" name="field-2" data-name="Field 2" placeholder="Filter by name" type="text" id="field-2">
             </div>
           </form>
         </div>
-      `.trim(); // Asegurarnos de eliminar espacios innecesarios
-  
-      const element = template.content.firstChild;
-  
-      if (!element || !(element instanceof HTMLElement)) {
-        console.error("El template no generó un elemento válido.");
-      }
-  
-      return element;
+      `.trim();
+      return template.content.firstChild;
     }
   
     addEventListeners() {
       const form = this.element.querySelector("#events-filters");
-      if (!form) {
-        throw new Error("No se encontró el formulario #events-filters en el elemento.");
-      }
   
+      // Listener para cambios en los filtros
       form.addEventListener("change", () => {
         const formData = new FormData(form);
-        this.filters.upcomingOnly = formData.get("upcoming") === "upcoming";
-        this.filters.temporalidad = formData.get("temporalidad");
+        this.filters.upcomingOnly = formData.get("Upcoming") === "Radio";
+        this.filters.temporalidad = formData.get("Temporalidad");
         this.onFilterChange();
       });
   
+      // Listener para el input de búsqueda
       const searchInput = this.element.querySelector(".events-name-filter-field");
-      if (!searchInput) {
-        throw new Error("No se encontró el input .events-name-filter-field en el elemento.");
-      }
-  
       searchInput.addEventListener("input", (event) => {
         this.filters.searchQuery = event.target.value;
         this.onFilterChange();
@@ -92,5 +74,4 @@ export class EventCalendarFilters {
       return this.element;
     }
   }
-  
   
