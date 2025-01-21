@@ -6,6 +6,7 @@ export class EventCalendarFilters {
       searchQuery: "", // Texto del input de búsqueda
     };
     this.onFilterChange = onFilterChange;
+    this.onTemporalidadChange = null; // Callback para cambios de "temporalidad"
     this.element = this.createElement();
     this.addEventListeners();
   }
@@ -17,23 +18,23 @@ export class EventCalendarFilters {
         <form id="events-filters" class="events-header-filters">
           <label id="all-events" class="filtro w-radio">
             <div class="w-form-formradioinput w-form-formradioinput--inputType-custom radio-buton w-radio-input w--redirected-checked"></div>
-            <input type="radio" name="Upcoming" id="filter-upcoming" data-name="Upcoming" style="opacity:0;position:absolute;z-index:-1" value="all" checked>
+            <input type="radio" name="Upcoming" id="filter-upcoming" data-name="Upcoming" style="opacity:0;position:absolute;z-index:-1" checked>
             <span class="paragraph w-form-label" for="filter-upcoming">All events</span>
           </label>
           <label id="upcoming-events" class="filtro w-radio">
             <div class="w-form-formradioinput w-form-formradioinput--inputType-custom radio-buton w-radio-input"></div>
-            <input type="radio" name="Upcoming" id="radio-3" data-name="Upcoming" style="opacity:0;position:absolute;z-index:-1" value="upcoming">
+            <input type="radio" name="Upcoming" id="radio-3" data-name="Upcoming" style="opacity:0;position:absolute;z-index:-1">
             <span class="paragraph w-form-label" for="radio-3">Only upcoming</span>
           </label>
           <div class="filters-separator"></div>
           <label id="month-events" class="filtro w-radio">
             <div class="w-form-formradioinput w-form-formradioinput--inputType-custom radio-buton w-radio-input w--redirected-checked"></div>
-            <input type="radio" name="Temporalidad" id="filter-month" data-name="Temporalidad" style="opacity:0;position:absolute;z-index:-1" value="Month" checked>
+            <input type="radio" name="Temporalidad" id="filter-month" data-name="Temporalidad" style="opacity:0;position:absolute;z-index:-1" checked>
             <span class="paragraph w-form-label" for="filter-month">Month</span>
           </label>
           <label id="events-year" class="filtro w-radio">
             <div class="w-form-formradioinput w-form-formradioinput--inputType-custom radio-buton w-radio-input"></div>
-            <input type="radio" name="Temporalidad" id="radio-2" data-name="Temporalidad" style="opacity:0;position:absolute;z-index:-1" value="Year">
+            <input type="radio" name="Temporalidad" id="radio-2" data-name="Temporalidad" style="opacity:0;position:absolute;z-index:-1">
             <span class="paragraph w-form-label" for="radio-2">Year</span>
           </label>
           <div class="filters-separator"></div>
@@ -53,8 +54,14 @@ export class EventCalendarFilters {
     // Listener para cambios en los filtros
     form.addEventListener("change", () => {
       const formData = new FormData(form);
-      this.filters.upcomingOnly = formData.get("Upcoming") === "upcoming";
-      this.filters.temporalidad = formData.get("Temporalidad");
+      this.filters.upcomingOnly = formData.get("Upcoming") === "Radio";
+      const newTemporalidad = formData.get("Temporalidad");
+      if (newTemporalidad !== this.filters.temporalidad) {
+        this.filters.temporalidad = newTemporalidad;
+        if (this.onTemporalidadChange) {
+          this.onTemporalidadChange(this.filters.temporalidad);
+        }
+      }
       this.onFilterChange();
     });
 
@@ -64,6 +71,10 @@ export class EventCalendarFilters {
       this.filters.searchQuery = event.target.value;
       this.onFilterChange();
     });
+  }
+
+  setOnTemporalidadChange(callback) {
+    this.onTemporalidadChange = callback;
   }
 
   getFilters() {

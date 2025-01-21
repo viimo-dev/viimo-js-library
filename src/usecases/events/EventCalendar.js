@@ -42,12 +42,17 @@ export class EventCalendar {
           date: event.startDate.split("T")[0],
           count: 1,
         })),
-        onMonthChange: (newMonth, newYear) => {
-          if (filters.getFilters().temporalidad === "Month") {
+        onMonthChange: (newMonth, newYear) => { // Aquí es donde lo corriges
+          const temporalidad = filters.getFilters().temporalidad;
+
+          if (temporalidad === "Month") {
             this.updateEventList(newMonth, newYear, events, eventsContainer, filters.getFilters());
+          } else if (temporalidad === "Year") {
+            this.renderYearView(newYear, events, eventsContainer, filters.getFilters());
           }
         },
       });
+
 
       calendyContainer.innerHTML = "";
       calendyContainer.appendChild(calendy.getElement());
